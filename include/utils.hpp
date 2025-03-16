@@ -31,7 +31,9 @@ void GetSymbolsAfterReduce(LR_Parser::ActionType action, std::vector<std::string
 }
 
 namespace LexicalAnalyzer {
+#ifdef PRINT_TABLE
 std::string GetSubstringFromTokenIndex(std::size_t token_index, const std::vector<Lexer::Lexeme>& tokens);
 
 std::string GetCurrentSymbol(std::size_t token_index, const std::vector<Lexer::Lexeme>& tokens);
+#endif
 }
