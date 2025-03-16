@@ -1,0 +1,5 @@
+build/
+*.json
+.cache/
+.clangd
+lexer.cpp
