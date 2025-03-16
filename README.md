@@ -2,7 +2,7 @@
 ## Grammar
 - E -> E + T | E - T | T
 - T -> T * F | T / F | F
-- F -> (E) | **id** | **num**
+- F -> (E) | id | num
 
 
 ## Dependencies
@@ -19,9 +19,11 @@ To compile parser:
 
 ``` cmd
 $ mkdir build
-$  cmake -S ./ -B build/Release -DCMAKE_BUILD_TYPE=Release -DPRINT_TABLE=ON
+$ cmake -S ./ -B build/Release -DCMAKE_BUILD_TYPE=Release -DPRINT_TABLE=ON
 $ cmake --build build/Release
 ```
+
+-DPRINT_TABLE=ON option is mandatory, because without it the table will not be generated. It can be omitted, but then you do not need to pass the file to the parser constructor
 
 ### Test
 
