@@ -1,5 +1,6 @@
 #include <cstddef>
 #include <iomanip>
+#include <algorithm>
 #include "utils.hpp"
 
 #ifdef PRINT_TABLE
