@@ -9,18 +9,15 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
-        std::string file_name = argv[1];
-
-        std::ifstream input_file(file_name);
+        std::ifstream input_file(argv[1]);
         if (!input_file.is_open()) {
-            std::cerr << "Can't open input file" << file_name << "\n";
+            std::cerr << "Can't open input file" << argv[1] << "\n";
             return EXIT_FAILURE;
         }
 
         LexicalAnalyzer::Lexer lexer(input_file);
 
-        std::string table_file("examples/table1.txt");
-        SyntaxAnalyzer::LR_Parser parser(table_file);
+        SyntaxAnalyzer::LR_Parser parser;
 
         parser.Parse(lexer);
 

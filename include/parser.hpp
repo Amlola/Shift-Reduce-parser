@@ -15,7 +15,6 @@ class LR_Parser final {
 
     public:     
         LR_Parser() = default;
-        explicit LR_Parser(const std::string& file_name);
         void Parse(LexicalAnalyzer::Lexer& lexer);
 
         enum class TerminalsType {
@@ -47,13 +46,6 @@ class LR_Parser final {
             SHIFT,
             ERROR,
         };
-
-        struct Production final {
-            TerminalsType header;
-            std::size_t len;
-
-            Production(TerminalsType header, std::size_t len) : header(header), len(len) {}
-        };
     
     private:
         
@@ -83,7 +75,6 @@ class LR_Parser final {
         std::stack<int> stack;
 
         std::size_t current_token_index = 0;
-        std::ofstream table_file;
 
         void Shift(const Action& action, const LexicalAnalyzer::Lexer& lexer);
         void Reduce(const Action& action, const LexicalAnalyzer::Lexer& lexer);

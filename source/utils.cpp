@@ -6,16 +6,16 @@
 namespace TablePrinter {
 using namespace SyntaxAnalyzer;
 
-void PrintTitle(std::ofstream& out) {
+void PrintTitle() {
 
-    out << std::setw(width) << std::left << "Stack"
-        << std::setw(width) << std::left << "Symbols"
-        << std::setw(width) << std::left << "Input"
-        << std::setw(width) << std::left << "Action\n";
-    out << "\n";
+    std::cout << std::setw(width) << std::left << "Stack"
+              << std::setw(width) << std::left << "Symbols"
+              << std::setw(width) << std::left << "Input"
+              << std::setw(width) << std::left << "Action\n";
+    std::cout << "\n";
 }
 
-void PrintStack(const std::stack<int>& stack, std::ofstream& out) {
+void PrintStack(const std::stack<int>& stack) {
     
     std::stack<int> temp_stack = stack;
     std::vector<int> elements;
@@ -30,11 +30,11 @@ void PrintStack(const std::stack<int>& stack, std::ofstream& out) {
         stack_content += std::to_string(*it) + " ";
     }
 
-    out << std::setw(width) << std::left << stack_content;
+    std::cout << std::setw(width) << std::left << stack_content;
 }
 
 
-void PrintSymbols(const std::vector<std::string>& symbols, std::ofstream& out) {
+void PrintSymbols(const std::vector<std::string>& symbols) {
 
     std::string symbols_content;
 
@@ -42,7 +42,7 @@ void PrintSymbols(const std::vector<std::string>& symbols, std::ofstream& out) {
         symbols_content += symb;
     }
 
-    out << std::setw(width) << std::left << "$" + symbols_content;
+    std::cout << std::setw(width) << std::left << "$" + symbols_content;
 }
 
 std::string GetStringAction(LR_Parser::ActionType action) {
@@ -65,14 +65,14 @@ std::string GetStringAction(LR_Parser::ActionType action) {
     }
 }
 
-void PrintTableRow(std::ofstream& out, const std::stack<int>& stack, const std::vector<std::string>& symbols,
+void PrintTableRow(const std::stack<int>& stack, const std::vector<std::string>& symbols,
                 const std::string& input, LR_Parser::ActionType action) {
     
-    out << std::string(width * 4, '-') << "\n";
-    PrintStack(stack, out);
-    PrintSymbols(symbols, out);
-    out << std::setw(width) << std::left << input;
-    out << std::setw(width) << std::left << GetStringAction(action) << "\n";
+    std::cout << std::string(width * 4, '-') << "\n";
+    PrintStack(stack);
+    PrintSymbols(symbols);
+    std::cout << std::setw(width) << std::left << input;
+    std::cout << std::setw(width) << std::left << GetStringAction(action) << "\n";
 }
 }
 #endif
@@ -116,29 +116,28 @@ LR_Parser::TerminalsType GetTerminalType(const Lexer::Lexeme& lexeme) {
     }
 }
 
-LR_Parser::Production GetProduction(LR_Parser::ActionType action) {
-
+std::pair<LR_Parser::TerminalsType, std::size_t> GetProduction(LR_Parser::ActionType action) {
     switch (action) {
         case LR_Parser::ActionType::REDUCE_E_TO_E_ADD_T:
         case LR_Parser::ActionType::REDUCE_E_TO_E_SUB_T:
-            return LR_Parser::Production(LR_Parser::TerminalsType::E, 3);
+            return {LR_Parser::TerminalsType::E, 3};
 
         case LR_Parser::ActionType::REDUCE_E_TO_T:
-            return LR_Parser::Production(LR_Parser::TerminalsType::E, 1);
+            return {LR_Parser::TerminalsType::E, 1};
 
         case LR_Parser::ActionType::REDUCE_T_TO_T_DIV_F:
         case LR_Parser::ActionType::REDUCE_T_TO_T_MUL_F:
-            return LR_Parser::Production(LR_Parser::TerminalsType::T, 3);
+            return {LR_Parser::TerminalsType::T, 3};
 
         case LR_Parser::ActionType::REDUCE_T_TO_F:
-            return LR_Parser::Production(LR_Parser::TerminalsType::T, 1);
+            return {LR_Parser::TerminalsType::T, 1};
 
         case LR_Parser::ActionType::REDUCE_F_TO_ID:
         case LR_Parser::ActionType::REDUCE_F_TO_NUM:
-            return LR_Parser::Production(LR_Parser::TerminalsType::F, 1);
+            return {LR_Parser::TerminalsType::F, 1};
 
         case LR_Parser::ActionType::REDUCE_F_TO_BRACKET_E:
-            return LR_Parser::Production(LR_Parser::TerminalsType::F, 3);
+            return {LR_Parser::TerminalsType::F, 3};
 
         default:
             throw std::runtime_error("Unknown action");
@@ -209,17 +208,15 @@ std::string GetSubstringFromTokenIndex(std::size_t token_index, const std::vecto
     }
 
     std::string result;
-    for (std::size_t i = token_index; i < tokens.size(); ++i) {
-
-        result += GetCurrentSymbol(i, tokens);
-    }
+    std::for_each(tokens.begin() + token_index, tokens.end(), [&result](const auto& token) {
+        result += GetCurrentSymbol(token);
+    });
 
     return result + "$";
 }
 
-std::string GetCurrentSymbol(std::size_t token_index, const std::vector<Lexer::Lexeme>& tokens) {
+std::string GetCurrentSymbol(const Lexer::Lexeme& lexeme) {
 
-    const auto& lexeme = tokens[token_index];
     switch (lexeme.type) {
         case Lexer::LexemeType::IDENTIFICATOR:
             return std::get<std::string>(lexeme.token);

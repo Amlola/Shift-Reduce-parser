@@ -19,6 +19,13 @@ endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")
+    option(PRINT_TABLE ON)
+    add_compile_definitions(${PROJECT_NAME} PRIVATE PRINT_TABLE)
+else()
+    option(PRINT_TABLE OFF)
+    if (PRINT_TABLE STREQUAL "ON")
+    add_compile_definitions(${PROJECT_NAME} PRIVATE PRINT_TABLE)
+    endif()
 endif()
 
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/source/*.cpp)
@@ -30,8 +37,3 @@ target_include_directories(parser PRIVATE ${INCLUDE_DIR} ${SOURCE_DIR})
 target_link_libraries(parser -lfl)
 
 target_link_libraries(parser fl)
-
-option(PRINT_TABLE OFF)
-if (PRINT_TABLE STREQUAL "ON")
-  add_compile_definitions(${PROJECT_NAME} PRIVATE PRINT_TABLE)
-endif()

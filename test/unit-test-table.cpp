@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <iostream>
 #include "utils.hpp"
 
 bool CompareFiles(const std::string& expected_file, const std::string& actual_file) {
@@ -37,7 +38,9 @@ void RunParserAndGenerateTable(const std::string& input_file_name, const std::st
     }
 
     LexicalAnalyzer::Lexer lexer(input_file);
-    SyntaxAnalyzer::LR_Parser parser(table_file_name);
+    SyntaxAnalyzer::LR_Parser parser;
+    std::ofstream table_file(table_file_name);
+    std::cout.rdbuf(table_file.rdbuf());
     parser.Parse(lexer);
 
     input_file.close();
