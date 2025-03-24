@@ -72,11 +72,11 @@ jobs:
       - name: Run unit tests table
         run: |
           chmod +x artifacts/table_test/build/Release/UnitTestTable
-          cd artifacts/test/table_test/build/Release
-          ./UnitTestTable
+          cd artifacts/table_test/
+          ./build/Release/UnitTestTable
 
       - name: Run unit tests tree
         run: |
           chmod +x artifacts/tree_test/build/Release/UnitTestTree
-          cd artifacts/test/tree_test/build/Release
-          ./UnitTestTree
+          cd artifacts/tree_test/
+          ./build/Release/UnitTestTree
