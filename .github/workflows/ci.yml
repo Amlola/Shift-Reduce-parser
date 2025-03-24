@@ -50,6 +50,10 @@ jobs:
             test/table_test/build/Release
             test/tree_test/build/Release
             test/examples
+            test/table_test/expected_tables
+            test/table_test/received_tables
+            test/tree_test/expected_tree
+            test/tree_test/received_tree
           if-no-files-found: error
 
   unit-tests:
