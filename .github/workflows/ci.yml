@@ -69,7 +69,7 @@ jobs:
           path: artifacts
 
       - name: List downloaded artifacts
-        run: ls artifacts 
+        run: ls -R artifacts 
 
       - name: Run unit tests table
         run: |
