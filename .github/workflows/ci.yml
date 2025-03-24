@@ -41,7 +41,7 @@ jobs:
         with:
           name: build-artifacts
           path: |
-            test/test_table/build
+            test/table_test/build
 
   unit-tests:
     name: Run unit tests
