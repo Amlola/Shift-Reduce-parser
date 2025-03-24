@@ -70,12 +70,14 @@ jobs:
 
       - name: Run unit tests table
         run: |
-            chmod +x test/table_test/build/Release/UnitTestTable
-            cd test/table_test/
-            ./build/Release/UnitTestTable
+          ls test/table_test/build
+          ls test/table_test/build/Release
+          chmod +x test/table_test/build/Release/UnitTestTable
+          cd test/table_test/
+          ./build/Release/UnitTestTable
 
       - name: Run unit tests tree
         run: |
-            chmod +x test/tree_test/build/Release/UnitTestTree
-            cd test/tree_test/
-            ./build/Release/UnitTestTree
+          chmod +x test/tree_test/build/Release/UnitTestTree
+          cd test/tree_test/
+          ./build/Release/UnitTestTree
