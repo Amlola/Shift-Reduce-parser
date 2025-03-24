@@ -30,11 +30,10 @@ $ cmake --build build/Release
 To compile unit tests you need the ```gtest``` library:
 
 ``` cmd
-$ cd test
+$ cd test/table_test
 $ mkdir build
-$ cd build
-$ сmake ..
-$ make
+$ cmake -S ./ -B build/Release -DCMAKE_BUILD_TYPE=Release
+$ cmake --build build/Release
 ```
 
 ## Run the program:
@@ -49,5 +48,5 @@ $ ./build/Release/parser examples/example1.txt
 
 ### Test:
 ``` cmd
-$ ./UnitTestTable
+$ ./build/Release/UnitTestTable
 ```

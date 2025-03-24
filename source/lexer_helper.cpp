@@ -1,5 +1,5 @@
 #include <string>
-#include "lexer.hpp"
+#include "../include/lexer.hpp"
 
 namespace LexicalAnalyzer {
 Lexer::Lexer(std::ifstream& input_file) {
@@ -29,5 +29,30 @@ Lexer::Lexeme Lexer::GetNextToken(std::size_t current_index) const {
 const std::vector<Lexer::Lexeme>& Lexer::GetTokens() const {
 
     return tokens;
+}
+
+std::string GetCurrentSymbol(const Lexer::Lexeme& lexeme) {
+
+    switch (lexeme.type) {
+        case Lexer::LexemeType::IDENTIFICATOR:
+            return std::get<std::string>(lexeme.token);
+            break;
+        case Lexer::LexemeType::NUMBER:
+            return std::to_string(std::get<int>(lexeme.token));
+            break;
+        case Lexer::LexemeType::OPERATOR:
+            switch (std::get<Lexer::Tokens>(lexeme.token)) {
+                case Lexer::Tokens::ADD:      return "+"; break;
+                case Lexer::Tokens::SUB:      return "-"; break;
+                case Lexer::Tokens::MUL:      return "*"; break;
+                case Lexer::Tokens::DIV:      return "/"; break;
+                case Lexer::Tokens::LBRACKET: return "("; break;
+                case Lexer::Tokens::RBRACKET: return ")"; break;
+                default: break;
+            }
+            break;
+    }
+
+    return "";
 }
 }

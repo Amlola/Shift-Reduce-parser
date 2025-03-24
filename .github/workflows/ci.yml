@@ -33,16 +33,15 @@ jobs:
       - name: Build unit tests
         run: |
           mkdir -p test/build
-          cd test/build
-          cmake ..
-          make
+          cmake -S ./ -B build/Release -DCMAKE_BUILD_TYPE=Release
+          cmake --build build/Release
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: |
-            test/build
+            test/test_table/build
 
   unit-tests:
     name: Run unit tests
@@ -61,6 +60,5 @@ jobs:
 
       - name: Run unit tests
         run: |
-          chmod +x test/build/UnitTestTable
-          cd test/build/
-          ./UnitTestTable
+          chmod +x test/build/Release/UnitTestTable
+          ./build/Release/UnitTestTable

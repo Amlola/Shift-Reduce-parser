@@ -52,4 +52,6 @@ class Lexer final : public yyFlexLexer {
     private:
         std::vector<Lexeme> tokens;
     };
+
+    std::string GetCurrentSymbol(const Lexer::Lexeme& lexeme);
 }

@@ -1,9 +1,9 @@
 #include <cstddef>
 #include <iomanip>
 #include <algorithm>
-#include "utils.hpp"
+#include "../include/utils.hpp"
 
-#ifdef PRINT_TABLE
+// #ifdef PRINT_TABLE
 namespace TablePrinter {
 using namespace SyntaxAnalyzer;
 
@@ -76,76 +76,39 @@ void PrintTableRow(const std::stack<int>& stack, const std::vector<std::string>&
     std::cout << std::setw(width) << std::left << GetStringAction(action) << "\n";
 }
 }
-#endif
+// #endif
 
 namespace SyntaxAnalyzer {
-using namespace LexicalAnalyzer;
 
-LR_Parser::TerminalsType GetTerminalType(const Lexer::Lexeme& lexeme) {
-
-    switch (lexeme.type) {
-        case Lexer::LexemeType::IDENTIFICATOR:
-            return LR_Parser::TerminalsType::ID;
-
-        case Lexer::LexemeType::NUMBER:
-            return LR_Parser::TerminalsType::NUMBER;
-
-        case Lexer::LexemeType::OPERATOR: {
-            auto token = std::get<Lexer::Tokens>(lexeme.token);
-            switch (token) {
-                case Lexer::Tokens::ADD:
-                    return LR_Parser::TerminalsType::ADD;
-                case Lexer::Tokens::SUB:
-                    return LR_Parser::TerminalsType::SUB;
-                case Lexer::Tokens::MUL:
-                    return LR_Parser::TerminalsType::MUL;
-                case Lexer::Tokens::DIV:
-                    return LR_Parser::TerminalsType::DIV;
-                case Lexer::Tokens::LBRACKET:
-                    return LR_Parser::TerminalsType::LBRACKET;
-                case Lexer::Tokens::RBRACKET:
-                    return LR_Parser::TerminalsType::RBRACKET;
-                case Lexer::Tokens::END:
-                    return LR_Parser::TerminalsType::END;
-                default:
-                    throw std::runtime_error("Unknown operator token");
-            }
-        }
-
-        default:
-            throw std::runtime_error("Unknown token type");
-    }
-}
-
-std::pair<LR_Parser::TerminalsType, std::size_t> GetProduction(LR_Parser::ActionType action) {
+std::pair<ParseTree::Node::NonTerminalsType, std::size_t> GetProduction(LR_Parser::ActionType action) {
     switch (action) {
         case LR_Parser::ActionType::REDUCE_E_TO_E_ADD_T:
         case LR_Parser::ActionType::REDUCE_E_TO_E_SUB_T:
-            return {LR_Parser::TerminalsType::E, 3};
+            return {ParseTree::Node::NonTerminalsType::E, 3};
 
         case LR_Parser::ActionType::REDUCE_E_TO_T:
-            return {LR_Parser::TerminalsType::E, 1};
+            return {ParseTree::Node::NonTerminalsType::E, 1};
 
         case LR_Parser::ActionType::REDUCE_T_TO_T_DIV_F:
         case LR_Parser::ActionType::REDUCE_T_TO_T_MUL_F:
-            return {LR_Parser::TerminalsType::T, 3};
+            return {ParseTree::Node::NonTerminalsType::T, 3};
 
         case LR_Parser::ActionType::REDUCE_T_TO_F:
-            return {LR_Parser::TerminalsType::T, 1};
+            return {ParseTree::Node::NonTerminalsType::T, 1};
 
         case LR_Parser::ActionType::REDUCE_F_TO_ID:
         case LR_Parser::ActionType::REDUCE_F_TO_NUM:
-            return {LR_Parser::TerminalsType::F, 1};
+            return {ParseTree::Node::NonTerminalsType::F, 1};
 
         case LR_Parser::ActionType::REDUCE_F_TO_BRACKET_E:
-            return {LR_Parser::TerminalsType::F, 3};
+            return {ParseTree::Node::NonTerminalsType::F, 3};
 
         default:
             throw std::runtime_error("Unknown action");
     }
 }
 
-#ifdef PRINT_TABLE
+// #ifdef PRINT_TABLE
 void GetSymbolsAfterReduce(LR_Parser::ActionType action, std::vector<std::string>& symbols) {
     switch (action) {
         case LR_Parser::ActionType::REDUCE_E_TO_E_ADD_T:
@@ -197,11 +160,11 @@ void GetSymbolsAfterReduce(LR_Parser::ActionType action, std::vector<std::string
             break;
     }
 }
-#endif
+// #endif
 }
 
-#ifdef PRINT_TABLE
 namespace LexicalAnalyzer {
+// #ifdef PRINT_TABLE
 std::string GetSubstringFromTokenIndex(std::size_t token_index, const std::vector<Lexer::Lexeme>& tokens) {
 
     if (token_index >= tokens.size()) {
@@ -215,30 +178,24 @@ std::string GetSubstringFromTokenIndex(std::size_t token_index, const std::vecto
 
     return result + "$";
 }
+// #endif
 
-std::string GetCurrentSymbol(const Lexer::Lexeme& lexeme) {
+Lexer::Tokens GetTokenType(const Lexer::Lexeme& lexeme) {
 
     switch (lexeme.type) {
         case Lexer::LexemeType::IDENTIFICATOR:
-            return std::get<std::string>(lexeme.token);
+            return Lexer::Tokens::ID;
             break;
         case Lexer::LexemeType::NUMBER:
-            return std::to_string(std::get<int>(lexeme.token));
+            return Lexer::Tokens::NUM;
             break;
         case Lexer::LexemeType::OPERATOR:
-            switch (std::get<Lexer::Tokens>(lexeme.token)) {
-                case Lexer::Tokens::ADD:      return "+"; break;
-                case Lexer::Tokens::SUB:      return "-"; break;
-                case Lexer::Tokens::MUL:      return "*"; break;
-                case Lexer::Tokens::DIV:      return "/"; break;
-                case Lexer::Tokens::LBRACKET: return "("; break;
-                case Lexer::Tokens::RBRACKET: return ")"; break;
-                default: break;
-            }
+            return (std::get<Lexer::Tokens>(lexeme.token));
             break;
+        default:
+            throw std::runtime_error("Unknown token");
     }
 
-    return "";
+    return Lexer::Tokens::END;
 }
 }
-#endif
