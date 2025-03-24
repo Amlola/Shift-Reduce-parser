@@ -68,4 +68,5 @@ jobs:
       - name: Run unit tests
         run: |
           chmod +x test/table_test/build/Release/UnitTestTable
-          ./test/table_test/build/Release/UnitTestTable
+          cd test/table_test/
+          ./build/Release/UnitTestTable
