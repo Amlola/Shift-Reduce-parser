@@ -49,11 +49,7 @@ jobs:
           path: |
             test/table_test/build/Release
             test/tree_test/build/Release
-            test/table_test/expected_tables
-            test/table_test/received_tables
             test/examples
-            test/tree_test/expected_tree
-            test/tree_test/received_tree
           if-no-files-found: error
 
   unit-tests:
@@ -73,22 +69,6 @@ jobs:
 
       - name: List downloaded artifacts
         run: ls -R artifacts 
-
-      - name: Prepare directories
-        run: |
-          mkdir -p test/table_test/expected_tables
-          mkdir -p test/table_test/received_tables
-
-          mkdir -p test/tree_test/expected_tree
-          mkdir -p test/tree_test/received_tree
-
-          cp -r expected_tables/* test/table_test/expected_tables/
-          cp -r received_tables/* test/table_test/received_tables/
-
-          cp -r expected_tree/* test/tree_test/expected_tree/
-          cp -r received_tree/* test/tree_test/received_tree/
-
-          cp -r examples/* artifacts/examples/
 
       - name: Run unit tests table
         run: |
