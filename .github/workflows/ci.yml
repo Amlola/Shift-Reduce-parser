@@ -35,12 +35,14 @@ jobs:
           mkdir -p test/table_test/build/Release
           cmake -S test/table_test -B test/table_test/build/Release -DCMAKE_BUILD_TYPE=Release
           cmake --build test/table_test/build/Release
+          ls -l test/table_test/build/Release
 
       - name: Build unit tests tree
         run: |
           mkdir -p test/tree_test/build/Release
           cmake -S test/tree_test -B test/tree_test/build/Release -DCMAKE_BUILD_TYPE=Release
           cmake --build test/tree_test/build/Release
+          ls -l test/tree_test/build/Release
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -67,6 +69,11 @@ jobs:
           path: |
             test/table_test/build/Release
             test/tree_test/build/Release
+
+      - name: Check downloaded artifacts
+        run: |
+          ls -l test/table_test/build/Release
+          ls -l test/tree_test/build/Release
 
       - name: Run unit tests
         run: |
