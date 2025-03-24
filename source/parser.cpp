@@ -6,21 +6,21 @@
 #include <optional>
 #include <string>
 #include <algorithm>
-#include "../include/utils.hpp"
+#include "utils.hpp"
 
 namespace SyntaxAnalyzer {
-// #ifdef PRINT_TABLE
+#ifdef PRINT_TABLE
     using namespace TablePrinter;
-// #endif
+#endif
 using namespace LexicalAnalyzer;
 
 void LR_Parser::Parse(Lexer& lexer) {
 
     stack.push(0);
 
-    // #ifdef PRINT_TABLE
+    #ifdef PRINT_TABLE
         PrintTitle();
-    // #endif
+    #endif
 
     while (true) {
         Lexer::Lexeme token = lexer.GetNextToken(current_token_index);
@@ -44,9 +44,9 @@ void LR_Parser::Parse(Lexer& lexer) {
             if (parse_tree_stack.size() != 1) {
                 throw std::runtime_error{"Syntax error"};
             }
-            // #ifdef PRINT_TABLE
+            #ifdef PRINT_TABLE
                 PrintTableRow(stack, symbols, GetSubstringFromTokenIndex(current_token_index, lexer.GetTokens()), action.action);
-            // #endif
+            #endif
             break;
         } else { 
             Reduce(action, lexer);
@@ -59,13 +59,13 @@ void LR_Parser::Shift(const Action& action, const Lexer& lexer) {
     const auto& tokens = lexer.GetTokens();
     const auto& token = tokens[current_token_index];
 
-    // #ifdef PRINT_TABLE
+    #ifdef PRINT_TABLE
         std::string input = GetSubstringFromTokenIndex(current_token_index, tokens);
         
         PrintTableRow(stack, symbols, input, action.action);
 
         symbols.emplace_back(GetCurrentSymbol(token));
-    // #endif
+    #endif
 
     stack.push(action.next_cond);
 
@@ -74,11 +74,11 @@ void LR_Parser::Shift(const Action& action, const Lexer& lexer) {
 
 void LR_Parser::Reduce(const Action& action, const Lexer& lexer) {
 
-    // #ifdef PRINT_TABLE
+    #ifdef PRINT_TABLE
         PrintTableRow(stack, symbols, GetSubstringFromTokenIndex(current_token_index, lexer.GetTokens()), action.action);
 
         GetSymbolsAfterReduce(action.action, symbols);
-    // #endif
+    #endif
 
     std::vector<std::unique_ptr<ParseTree::Node>> children;
 

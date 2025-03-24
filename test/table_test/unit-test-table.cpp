@@ -6,7 +6,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include "../../include/utils.hpp"
+#include "utils.hpp"
 
 bool CompareFiles(const std::string& expected_file, const std::string& actual_file) {
 
@@ -48,7 +48,7 @@ void RunParserAndGenerateTable(const std::string& input_file_name, const std::st
 
 TEST(ParserTest, FirstTableTest) {
 
-    std::string expected_file = ".expected_tables/exp_table1.txt";
+    std::string expected_file = "expected_tables/exp_table1.txt";
     std::string input_file_name = "../examples/num1.txt";
     std::string table_file = "received_tables/get_table1.txt";
 

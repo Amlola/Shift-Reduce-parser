@@ -4,7 +4,7 @@
 #include "parser.hpp"
 #include <string>
 
-// #ifdef PRINT_TABLE
+#ifdef PRINT_TABLE
 namespace TablePrinter {
 constexpr std::size_t width = 30;
 
@@ -19,20 +19,20 @@ std::string GetStringAction(SyntaxAnalyzer::LR_Parser::ActionType action);
 void PrintTableRow(const std::stack<int>& stack, const std::vector<std::string>& symbols, 
     const std::string& input, SyntaxAnalyzer::LR_Parser::ActionType action);
 }
-// #endif
+#endif
 
 namespace SyntaxAnalyzer {
 std::pair<ParseTree::Node::NonTerminalsType, std::size_t> GetProduction(LR_Parser::ActionType action);
 
-// #ifdef PRINT_TABLE
+#ifdef PRINT_TABLE
 void GetSymbolsAfterReduce(LR_Parser::ActionType action, std::vector<std::string>& symbols);
-// #endif
+#endif
 }
 
 namespace LexicalAnalyzer {
-// #ifdef PRINT_TABLE
+#ifdef PRINT_TABLE
 std::string GetSubstringFromTokenIndex(std::size_t token_index, const std::vector<Lexer::Lexeme>& tokens);
-// #endif
+#endif
 
 Lexer::Tokens GetTokenType(const Lexer::Lexeme& lexeme);
 }

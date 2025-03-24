@@ -1,9 +1,9 @@
 #include <cstddef>
 #include <iomanip>
 #include <algorithm>
-#include "../include/utils.hpp"
+#include "utils.hpp"
 
-// #ifdef PRINT_TABLE
+#ifdef PRINT_TABLE
 namespace TablePrinter {
 using namespace SyntaxAnalyzer;
 
@@ -76,7 +76,7 @@ void PrintTableRow(const std::stack<int>& stack, const std::vector<std::string>&
     std::cout << std::setw(width) << std::left << GetStringAction(action) << "\n";
 }
 }
-// #endif
+#endif
 
 namespace SyntaxAnalyzer {
 
@@ -108,7 +108,7 @@ std::pair<ParseTree::Node::NonTerminalsType, std::size_t> GetProduction(LR_Parse
     }
 }
 
-// #ifdef PRINT_TABLE
+#ifdef PRINT_TABLE
 void GetSymbolsAfterReduce(LR_Parser::ActionType action, std::vector<std::string>& symbols) {
     switch (action) {
         case LR_Parser::ActionType::REDUCE_E_TO_E_ADD_T:
@@ -160,11 +160,11 @@ void GetSymbolsAfterReduce(LR_Parser::ActionType action, std::vector<std::string
             break;
     }
 }
-// #endif
+#endif
 }
 
 namespace LexicalAnalyzer {
-// #ifdef PRINT_TABLE
+#ifdef PRINT_TABLE
 std::string GetSubstringFromTokenIndex(std::size_t token_index, const std::vector<Lexer::Lexeme>& tokens) {
 
     if (token_index >= tokens.size()) {
@@ -178,7 +178,7 @@ std::string GetSubstringFromTokenIndex(std::size_t token_index, const std::vecto
 
     return result + "$";
 }
-// #endif
+#endif
 
 Lexer::Tokens GetTokenType(const Lexer::Lexeme& lexeme) {
 

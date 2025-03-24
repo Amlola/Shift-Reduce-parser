@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <iostream>
-#include "../include/utils.hpp"
+#include "utils.hpp"
     
 int main(int argc, char** argv) {
     try {

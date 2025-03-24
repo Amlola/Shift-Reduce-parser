@@ -55,11 +55,20 @@ class Node {
 class TreePrinter {
 
     public:
-        void PrintTree(const Node& node, std::ofstream output_tree) const {
+        void PrintTree(const Node& node, const std::string& file_output_tree_name) const {
 
             std::ostringstream oss;
             GetPreOrder(node, oss);
-            output_tree << oss.str() << "\n";
+
+            std::ofstream out(file_output_tree_name);
+            if (!out) {
+                throw std::runtime_error("Can't open text output file with tree");
+                return;
+            }
+
+            out << oss.str() << "\n";
+
+            out.close();
         }
     
         void GenerateDotFile(const Node& node, const std::string& filename) const {
