@@ -35,14 +35,12 @@ jobs:
           mkdir -p test/table_test/build/Release
           cmake -S test/table_test -B test/table_test/build/Release -DCMAKE_BUILD_TYPE=Release
           cmake --build test/table_test/build/Release
-          ls -R test/table_test/build/Release
 
       - name: Build unit tests tree
         run: |
           mkdir -p test/tree_test/build/Release
           cmake -S test/tree_test -B test/tree_test/build/Release -DCMAKE_BUILD_TYPE=Release
           cmake --build test/tree_test/build/Release
-          ls -R test/tree_test/build/Release
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -66,19 +64,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
-          path: artifacts
+          path: |
+            test/table_test/build/Release
+            test/tree_test/build/Release
 
-      - name: List downloaded artifacts
-        run: ls -R artifacts
-
-      - name: Run table tests
+      - name: Run unit tests table
         run: |
-          chmod +x artifacts/test/table_test/build/Release/UnitTestTable
-          cd artifacts/test/table_test/
-          ./build/Release/UnitTestTable
+            chmod +x test/table_test/build/Release/UnitTestTable
+            cd test/table_test/
+            ./build/Release/UnitTestTable
 
-      - name: Run tree tests
+      - name: Run unit tests tree
         run: |
-          chmod +x artifacts/test/tree_test/build/Release/UnitTestTree
-          cd artifacts/test/tree_test/
-          ./build/Release/UnitTestTree
+            chmod +x test/tree_test/build/Release/UnitTestTree
+            cd test/tree_test/
+            ./build/Release/UnitTestTree
