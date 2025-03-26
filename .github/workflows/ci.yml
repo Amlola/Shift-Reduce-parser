@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - build-system-rewrite
   pull_request:
     branches:
       - main
@@ -30,30 +31,18 @@ jobs:
           sudo make
           sudo cp lib/*.a /usr/lib
 
-      - name: Build unit tests table
+      - name: Build project
         run: |
-          mkdir -p test/table_test/build/Release
-          cmake -S test/table_test -B test/table_test/build/Release -DCMAKE_BUILD_TYPE=Release
-          cmake --build test/table_test/build/Release
-
-      - name: Build unit tests tree
-        run: |
-          mkdir -p test/tree_test/build/Release
-          cmake -S test/tree_test -B test/tree_test/build/Release -DCMAKE_BUILD_TYPE=Release
-          cmake --build test/tree_test/build/Release
+          mkdir -p build
+          cmake -S ./ -B build -DCMAKE_BUILD_TYPE=Release -DPRINT_TABLE=ON
+          cmake --build build/
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: |
-            test/table_test/build/Release
-            test/tree_test/build/Release
-            test/examples
-            test/table_test/expected_tables
-            test/table_test/received_tables
-            test/tree_test/expected_tree
-            test/tree_test/received_tree
+            build/
           if-no-files-found: error
 
   unit-tests:
@@ -69,19 +58,17 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
-          path: artifacts
+          path: build/
 
       - name: List downloaded artifacts
-        run: ls -R artifacts 
+        run: ls -R build
 
       - name: Run unit tests table
         run: |
-          chmod +x artifacts/table_test/build/Release/UnitTestTable
-          cd artifacts/table_test/
-          ./build/Release/UnitTestTable
+          chmod +x build/tests/UnitTestTable 
+          ./build/tests/UnitTestTable 
 
       - name: Run unit tests tree
         run: |
-          chmod +x artifacts/tree_test/build/Release/UnitTestTree
-          cd artifacts/tree_test/
-          ./build/Release/UnitTestTree
+          chmod +x build/tests/UnitTestTree
+          ./build/tests/UnitTestTree
