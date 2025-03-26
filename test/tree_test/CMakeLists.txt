@@ -1,34 +1,22 @@
-cmake_minimum_required(VERSION 3.10)
-
 project(UnitTestTree)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(TREE_TEST_SOURCES unit-test-tree.cpp)
 
-set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../include)
+list(TRANSFORM TREE_TEST_SOURCES PREPEND ${CMAKE_CURRENT_SOURCE_DIR}/)
 
-set(SOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/../../source/parser.cpp 
-    ${CMAKE_SOURCE_DIR}/../../source/utils.cpp
-    ${CMAKE_SOURCE_DIR}/../../source/lexer_helper.cpp
-)
+set(TEST_SOURCE_FILE ${CMAKE_SOURCE_DIR}/unit-test-table.cpp)
 
-find_package(FLEX REQUIRED)
-flex_target(Lexer ${CMAKE_SOURCE_DIR}/../../source/lexer.l ${CMAKE_BINARY_DIR}/lexer.cpp)
+add_executable(${PROJECT_NAME} ${TREE_TEST_SOURCES})
+target_link_libraries(${PROJECT_NAME} PRIVATE parser-lib gtest gtest_main)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
-set(TEST_SOURCE_FILE ${CMAKE_SOURCE_DIR}/unit-test-tree.cpp)
+target_compile_definitions(${PROJECT_NAME} PRIVATE PRINT_TABLE TEST_FILE_DIR="${TEST_FILE_DIR}/${PROJECT_NAME}/")
 
-add_executable(${PROJECT_NAME}
-    ${TEST_SOURCE_FILE}
-    ${SOURCE_FILES}
-    ${FLEX_Lexer_OUTPUTS} 
-)
+set_target_properties(${PROJECT_NAME} PROPERTIES 
+                      ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/lib
+                      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/lib
+                      RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)                    
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR})
-
-target_link_libraries(${PROJECT_NAME} gtest)
-
-target_link_libraries(${PROJECT_NAME} -lfl)
-
-target_link_libraries(${PROJECT_NAME} fl)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/expected_tree DESTINATION ${TEST_FILE_DIR}/${PROJECT_NAME})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/received_tree DESTINATION ${TEST_FILE_DIR}/${PROJECT_NAME})
+# file(COPY expected_tree/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/configs)${TEST_FILES_DIR}/${PROJECT_NAME}

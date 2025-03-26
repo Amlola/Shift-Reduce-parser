@@ -73,9 +73,9 @@ void RunParserAndGenerateTree(const std::string& input_file_name, const std::str
 
 TEST(ParserTest, FirstTableTest) {
 
-    std::string expected_file = "expected_tree/exp_tree1.txt";
-    std::string input_file_name = "../examples/num1.txt";
-    std::string tree_out_file = "received_tree/get_tree1.txt";
+    std::string expected_file = TEST_FILE_DIR "expected_tree/exp_tree1.txt";
+    std::string input_file_name = TEST_FILE_DIR "../examples/num1.txt";
+    std::string tree_out_file = TEST_FILE_DIR "received_tree/get_tree1.txt";
 
     ASSERT_NO_THROW(RunParserAndGenerateTree(input_file_name, tree_out_file));
 
@@ -84,9 +84,9 @@ TEST(ParserTest, FirstTableTest) {
 
 TEST(ParserTest, SecondTableTest) {
 
-    std::string expected_file = "expected_tree/exp_tree2.txt";
-    std::string input_file_name = "../examples/num2.txt";
-    std::string tree_out_file = "received_tree/get_tree2.txt";
+    std::string expected_file = TEST_FILE_DIR "expected_tree/exp_tree2.txt";
+    std::string input_file_name = TEST_FILE_DIR "../examples/num2.txt";
+    std::string tree_out_file = TEST_FILE_DIR "received_tree/get_tree2.txt";
 
     ASSERT_NO_THROW(RunParserAndGenerateTree(input_file_name, tree_out_file));
 
@@ -95,9 +95,9 @@ TEST(ParserTest, SecondTableTest) {
 
 TEST(ParserTest, ThirdTableTest) {
 
-    std::string expected_file = "expected_tree/exp_tree3.txt";
-    std::string input_file_name = "../examples/num3.txt";
-    std::string tree_out_file = "received_tree/get_tree3.txt";
+    std::string expected_file = TEST_FILE_DIR "expected_tree/exp_tree3.txt";
+    std::string input_file_name = TEST_FILE_DIR "../examples/num3.txt";
+    std::string tree_out_file = TEST_FILE_DIR "received_tree/get_tree3.txt";
 
     ASSERT_NO_THROW(RunParserAndGenerateTree(input_file_name, tree_out_file));
 
@@ -106,18 +106,11 @@ TEST(ParserTest, ThirdTableTest) {
 
 TEST(ParserTest, FourthTableTest) {
 
-    std::string expected_file = "expected_tree/exp_tree3.txt";
-    std::string input_file_name = "../examples/num3.txt";
-    std::string tree_out_file = "received_tree/get_tree3.txt";
+    std::string expected_file = TEST_FILE_DIR "expected_tree/exp_tree3.txt";
+    std::string input_file_name = TEST_FILE_DIR "../examples/num3.txt";
+    std::string tree_out_file = TEST_FILE_DIR "received_tree/get_tree3.txt";
 
     ASSERT_NO_THROW(RunParserAndGenerateTree(input_file_name, tree_out_file));
 
     EXPECT_TRUE(CompareFiles(expected_file, tree_out_file));
-}
-
-int main(int argc, char **argv) {
-
-    ::testing::InitGoogleTest(&argc, argv);
-
-    return RUN_ALL_TESTS();
 }

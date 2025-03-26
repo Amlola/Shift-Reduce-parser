@@ -1,5 +1,5 @@
 #include <string>
-#include "../include/lexer.hpp"
+#include "lexer.hpp"
 
 namespace LexicalAnalyzer {
 Lexer::Lexer(std::ifstream& input_file) {
