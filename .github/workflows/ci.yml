@@ -60,9 +60,6 @@ jobs:
           name: build-artifacts
           path: build/
 
-      - name: List downloaded artifacts
-        run: ls -R build
-
       - name: Run unit tests table
         run: |
           chmod +x build/tests/UnitTestTable 
