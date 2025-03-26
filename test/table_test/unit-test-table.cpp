@@ -48,9 +48,9 @@ void RunParserAndGenerateTable(const std::string& input_file_name, const std::st
 
 TEST(ParserTest, FirstTableTest) {
 
-    std::string expected_file = "expected_tables/exp_table1.txt";
-    std::string input_file_name = "../examples/num1.txt";
-    std::string table_file = "received_tables/get_table1.txt";
+    std::string expected_file = TEST_FILE_DIR "table_test/expected_tables/exp_table1.txt";
+    std::string input_file_name = TEST_FILE_DIR "../examples/num1.txt";
+    std::string table_file = TEST_FILE_DIR "table_test/received_tables/get_table1.txt";
 
     ASSERT_NO_THROW(RunParserAndGenerateTable(input_file_name, table_file));
 
@@ -59,9 +59,9 @@ TEST(ParserTest, FirstTableTest) {
 
 TEST(ParserTest, SecondTableTest) {
 
-    std::string expected_file = "expected_tables/exp_table2.txt";
-    std::string input_file_name = "../examples/num2.txt";
-    std::string table_file = "received_tables/get_table2.txt";
+    std::string expected_file = TEST_FILE_DIR "table_test/expected_tables/exp_table2.txt";
+    std::string input_file_name = TEST_FILE_DIR "../examples/num2.txt";
+    std::string table_file = TEST_FILE_DIR "received_tables/get_table2.txt";
 
     ASSERT_NO_THROW(RunParserAndGenerateTable(input_file_name, table_file));
 
@@ -70,9 +70,9 @@ TEST(ParserTest, SecondTableTest) {
 
 TEST(ParserTest, ThirdTableTest) {
 
-    std::string expected_file = "expected_tables/exp_table3.txt";
-    std::string input_file_name = "../examples/num3.txt";
-    std::string table_file = "received_tables/get_table3.txt";
+    std::string expected_file = TEST_FILE_DIR "expected_tables/exp_table3.txt";
+    std::string input_file_name = TEST_FILE_DIR "../examples/num3.txt";
+    std::string table_file = TEST_FILE_DIR "received_tables/get_table3.txt";
 
     ASSERT_NO_THROW(RunParserAndGenerateTable(input_file_name, table_file));
 
@@ -81,18 +81,11 @@ TEST(ParserTest, ThirdTableTest) {
 
 TEST(ParserTest, FourthTableTest) {
 
-    std::string expected_file = "expected_tables/exp_table4.txt";
-    std::string input_file_name = "../examples/num4.txt";
-    std::string table_file = "received_tables/get_table4.txt";
+    std::string expected_file = TEST_FILE_DIR "expected_tables/exp_table4.txt";
+    std::string input_file_name = TEST_FILE_DIR "../examples/num4.txt";
+    std::string table_file = TEST_FILE_DIR "received_tables/get_table4.txt";
 
     ASSERT_NO_THROW(RunParserAndGenerateTable(input_file_name, table_file));
 
     EXPECT_TRUE(CompareFiles(expected_file, table_file));
-}
-
-int main(int argc, char **argv) {
-
-    ::testing::InitGoogleTest(&argc, argv);
-
-    return RUN_ALL_TESTS();
 }

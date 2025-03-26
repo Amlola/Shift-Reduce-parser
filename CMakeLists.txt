@@ -1,17 +1,24 @@
 cmake_minimum_required(VERSION 3.10)
 project(Parser)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 find_package(FLEX REQUIRED)
 
+
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/source)
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
-
 flex_target(Lexer ${SOURCE_DIR}/lexer.l ${SOURCE_DIR}/lexer.cpp)
+
+add_library(parser-lib STATIC)
+target_include_directories(parser-lib PUBLIC ${INCLUDE_DIR})
+target_link_libraries(parser-lib PUBLIC fl)
+
+add_executable(parser)
+target_link_libraries(parser PRIVATE parser-lib)
+target_compile_features(parser PUBLIC cxx_std_17)
+
+add_subdirectory(source)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -26,19 +33,16 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 else()
     option(PRINT_TABLE OFF)
     if (PRINT_TABLE STREQUAL "ON")
-    add_compile_definitions(${PROJECT_NAME} PRIVATE PRINT_TABLE)
+        add_compile_definitions(${PROJECT_NAME} PRIVATE PRINT_TABLE)
     endif()
     if (DUMP_TREE STREQUAL "ON")
-    add_compile_definitions(${PROJECT_NAME} PRIVATE DUMP_TREE)
+        add_compile_definitions(${PROJECT_NAME} PRIVATE DUMP_TREE)
     endif()
 endif()
 
-file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/source/*.cpp)
+set_target_properties(parser parser-lib PROPERTIES 
+                      ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/lib
+                      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/lib
+                      RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/bin)                     
 
-add_executable(parser ${SOURCES} ${FLEX_Lexer_OUTPUTS})
-
-target_include_directories(parser PRIVATE ${INCLUDE_DIR} ${SOURCE_DIR})
-
-target_link_libraries(parser -lfl)
-
-target_link_libraries(parser fl)
+add_subdirectory(test)
