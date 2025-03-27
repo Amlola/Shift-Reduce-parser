@@ -5,6 +5,14 @@
 - F -> (E) | id | num
 
 
+Expression grammar belongs to the class of LR grammars, which are suitable for bottom-up parsing. It cannot be used for top-down parsing due to its left-recursiveness.
+
+## Shift/Reduce syntactic analysis 
+
+## LR(0) Item DFA 
+
+## Example
+
 ## Dependencies
 1. g++
 2. CMake 3.10 version (or higher)
@@ -15,38 +23,43 @@
 
 ### Parser
 
-To compile parser:
+To get the parser library and test executables
 
 ``` cmd
 $ mkdir build
-$ cmake -S ./ -B build/Release -DCMAKE_BUILD_TYPE=Release -DPRINT_TABLE=ON
-$ cmake --build build/Release
+$ cmake -B build -DCMAKE_BUILD_TYPE=Release -DPRINT_TABLE=ON -DDUMP_TREE=ON 
+$ cmake --build build/
 ```
 
--DPRINT_TABLE=ON option is mandatory, because without it the table will not be generated. It can be omitted, but then you do not need to pass the file to the parser constructor
-
-### Test
-
-To compile unit tests you need the ```gtest``` library:
-
-``` cmd
-$ cd test/table_test
-$ mkdir build
-$ cmake -S ./ -B build/Release -DCMAKE_BUILD_TYPE=Release
-$ cmake --build build/Release
-```
+```-DPRINT_TABLE``` option is needed to get a log with a table. ```-DDUMP_TREE``` option is needed to get a dot file. 
 
 ## Run the program:
 
 ### Parser
 
-To run the parser, you need to pass the input file. The output table will be presented in the examples folder
+To run the parser, you need to pass the input file and dot file if you need tree visualization.
 
 ``` cmd
-$ ./build/Release/parser examples/example1.txt
+$ ./build/Release/bin/parser <input_file> <dot_file> 
+
+```
+
+If you need to visualize the tree, use 
+
+``` cmd
+dot -Tpng <dot_file> -o file.png
 ```
 
 ### Test:
+
+to run table tests
+
 ``` cmd
-$ ./build/Release/UnitTestTable
+$ ./build/tests/UnitTestTable
+```
+
+to run tree tests
+
+``` cmd
+$ ./build/tests/UnitTestTree
 ```
