@@ -46,7 +46,6 @@ class Lexer final : public yyFlexLexer {
         explicit Lexer(std::ifstream& input);
         explicit Lexer(const std::string& input);
 
-
         Lexeme GetNextToken(std::size_t current_index) const;
 
         const std::vector<Lexer::Lexeme>& GetTokens() const;
