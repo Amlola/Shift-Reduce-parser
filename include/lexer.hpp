@@ -44,6 +44,8 @@ class Lexer final : public yyFlexLexer {
         };
 
         explicit Lexer(std::ifstream& input);
+        explicit Lexer(const std::string& input);
+
 
         Lexeme GetNextToken(std::size_t current_index) const;
 
@@ -51,6 +53,9 @@ class Lexer final : public yyFlexLexer {
 
     private:
         std::vector<Lexeme> tokens;
+        std::string input_buffer;
+
+        void Tokenize();
     };
 
     std::string GetCurrentSymbol(const Lexer::Lexeme& lexeme);

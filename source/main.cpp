@@ -3,6 +3,7 @@
 #include "utils.hpp"
     
 int main(int argc, char** argv) {
+    
     try {
         #ifdef DUMP_TREE
             if (argc != 3) {

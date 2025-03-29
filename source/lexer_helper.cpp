@@ -1,10 +1,23 @@
 #include <string>
+#include <sstream> 
 #include "lexer.hpp"
 
 namespace LexicalAnalyzer {
-Lexer::Lexer(std::ifstream& input_file) {
+Lexer::Lexer(std::ifstream& input) : yyFlexLexer(&input, nullptr) {
 
-    switch_streams(&input_file, nullptr);
+    Tokenize();
+}
+
+Lexer::Lexer(const std::string& input) : input_buffer(input) {
+
+    std::istringstream tmp_stream(input_buffer);
+    
+    switch_streams(&tmp_stream, nullptr);
+    
+    Tokenize();
+}
+
+void Lexer::Tokenize() {
 
     Tokens type;
     while ((type = static_cast<Tokens>(yylex())) != Tokens::END) {
@@ -16,6 +29,8 @@ Lexer::Lexer(std::ifstream& input_file) {
             tokens.emplace_back(LexemeType::OPERATOR, type);
         }
     }
+
+    switch_streams(nullptr, nullptr);
 }
 
 Lexer::Lexeme Lexer::GetNextToken(std::size_t current_index) const {

@@ -5,7 +5,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 find_package(FLEX REQUIRED)
 
-
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/source)
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 flex_target(Lexer ${SOURCE_DIR}/lexer.l ${SOURCE_DIR}/lexer.cpp)
@@ -16,7 +15,7 @@ target_link_libraries(parser-lib PUBLIC fl)
 
 add_executable(parser)
 target_link_libraries(parser PRIVATE parser-lib)
-target_compile_features(parser PUBLIC cxx_std_17)
+target_compile_features(parser PRIVATE cxx_std_17)
 
 add_subdirectory(source)
 
@@ -46,3 +45,4 @@ set_target_properties(parser parser-lib PROPERTIES
                       RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/bin)                     
 
 add_subdirectory(test)
+add_subdirectory(driver) 
