@@ -2,6 +2,7 @@
 
 %{
     #include "lexer.hpp"
+    #include <stdexcept>
 %}
 
 NUMBER   [1-9][0-9]*|0
@@ -23,6 +24,6 @@ WS       [ \t\r\n]+
 ")"        { return static_cast<int>(LexicalAnalyzer::Lexer::Tokens::RBRACKET); }
 
 {WS}       { }
-.          { printf("Unknown symbol: %s\n", yytext); }
+.          { throw std::runtime_error("Unknown symbol: " + std::string(yytext) + " at line " + std::to_string(yylineno)); }
 
 %%
